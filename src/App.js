@@ -1,13 +1,9 @@
 import React from 'react'
 
-function SearchBar() {
+function SearchBar(props) {
   return (
     <div>
-      <input
-        onChange={function(e) {
-          console.log(e.target.value)
-        }}
-      />
+      <input onChange={props.onSearch} />
     </div>
   )
 }
@@ -22,20 +18,30 @@ function ListItem(props) {
 
 class App extends React.Component {
   state = {
-    results: ['Item #1', 'Item #2', 'Item #3'],
+    results: ['Item #A', 'Item #B', 'Item #C'],
+    searchQuery: null,
   }
 
-  handleSearch = function() {
-    console.log('handleSearch')
+  handleSearch = e => {
+    var value = e.target.value
+    this.setState({ searchQuery: value })
   }
 
   render() {
+    console.log(this.state.searchQuery)
     return (
       <div>
         <SearchBar onSearch={this.handleSearch} />
-        {this.state.results.map(function(item) {
-          return <ListItem name={item} />
-        })}
+        {this.state.results
+          .filter(item => {
+            if (this.state.searchQuery === null) {
+              return true
+            }
+            return item.includes(this.state.searchQuery)
+          })
+          .map(item => {
+            return <ListItem name={item} />
+          })}
       </div>
     )
   }
