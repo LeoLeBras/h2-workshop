@@ -1,16 +1,41 @@
-import React, { Component } from 'react'
-import './App.css'
+import React from 'react'
 
-class App extends Component {
+function SearchBar() {
+  return (
+    <div>
+      <input
+        onChange={function(e) {
+          console.log(e.target.value)
+        }}
+      />
+    </div>
+  )
+}
+
+function ListItem(props) {
+  return (
+    <div>
+      <span>{props.name}</span>
+    </div>
+  )
+}
+
+class App extends React.Component {
+  state = {
+    results: ['Item #1', 'Item #2', 'Item #3'],
+  }
+
+  handleSearch = function() {
+    console.log('handleSearch')
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro"/>>
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+        <SearchBar onSearch={this.handleSearch} />
+        {this.state.results.map(function(item) {
+          return <ListItem name={item} />
+        })}
       </div>
     )
   }
